@@ -11,7 +11,7 @@ module `debug`.
 config := "incoming*,core*"
 levelstring.Configure(config, spacelog.Debug)
 // Or straight from the environment
-levelstring.Configure(os.GetEnv("DEBUG"), spacelog.Debug)
+levelstring.Configure(os.Getenv("DEBUG"), spacelog.Debug)
 ```
 
 See http://godoc.org/github.com/dimfeld/spacelog-levelstring for more examples.
