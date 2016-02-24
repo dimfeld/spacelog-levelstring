@@ -3,8 +3,8 @@ glob-style string and uses `spacelog.SetLevel` to set the log level
 on all the matching loggers.
 
 This is designed so that you can easily enable certain debug levels using
-an environment variable or your other method of choice, similar to the NPM
-module `debug`.
+methods such as an environment variable or an HTTP endpoint.
+
 
 ```go
 // From some variable
