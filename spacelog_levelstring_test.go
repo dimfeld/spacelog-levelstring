@@ -16,9 +16,9 @@ func TestConfigure(t *testing.T) {
 
 	logger1Name := "aaa"
 	logger1 := spacelog.GetLoggerNamed(logger1Name)
-	logger2Name := "bbb1"
+	logger2Name := "bbb[1]"
 	logger2 := spacelog.GetLoggerNamed(logger2Name)
-	logger3Name := "bbb2"
+	logger3Name := "bbb[2]"
 	logger3 := spacelog.GetLoggerNamed(logger3Name)
 
 	check := func(l *spacelog.Logger, name string, expectEnabled bool) {
@@ -40,8 +40,8 @@ func TestConfigure(t *testing.T) {
 	check(logger2, logger2Name, true)
 	check(logger3, logger3Name, true)
 
-	t.Log("Disable bbb2")
-	Configure("bbb2", spacelog.Info)
+	t.Log("Disable bbb[2]")
+	Configure("bbb[2]", spacelog.Info)
 	check(logger1, logger1Name, false)
 	check(logger2, logger2Name, true)
 	check(logger3, logger3Name, false)
@@ -52,14 +52,14 @@ func TestConfigure(t *testing.T) {
 	check(logger2, logger2Name, true)
 	check(logger3, logger3Name, true)
 
-	t.Log("Disable bbb1, bbb2")
-	Configure("bbb1, bbb2", spacelog.Info)
+	t.Log("Disable bbb[1], bbb[2]")
+	Configure("bbb[1], bbb[2]", spacelog.Info)
 	check(logger1, logger1Name, true)
 	check(logger2, logger2Name, false)
 	check(logger3, logger3Name, false)
 
-	t.Log("Disable aaa,bbb1,bbb2")
-	Configure("bbb1,aaa,bbb2", spacelog.Info)
+	t.Log("Disable aaa,bbb[1],bbb[2]")
+	Configure("bbb[1],aaa,bbb[2]", spacelog.Info)
 	check(logger1, logger1Name, false)
 	check(logger2, logger2Name, false)
 	check(logger3, logger3Name, false)
@@ -70,8 +70,8 @@ func TestConfigure(t *testing.T) {
 	check(logger2, logger2Name, true)
 	check(logger3, logger3Name, true)
 
-	t.Log("Disable *b*")
-	Configure("*b1*", spacelog.Info)
+	t.Log("Disable *b[1*")
+	Configure("*b[1*", spacelog.Info)
 	check(logger1, logger1Name, true)
 	check(logger2, logger2Name, false)
 	check(logger3, logger3Name, true)

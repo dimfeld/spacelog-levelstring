@@ -7,6 +7,23 @@ import (
 	"github.com/spacemonkeygo/spacelog"
 )
 
+// var newLoggerLevels map[spacelog.LogLevel]*regexp.Regexp
+var replacer *strings.Replacer
+
+func init() {
+	// newLoggerLevels = make(map[spacelog.LogLevel]*regexp.Regexp)
+	replacer = strings.NewReplacer(
+		".", "\\.",
+		"?", "\\?",
+		"+", "\\+",
+		"[", "\\[",
+		"]", "\\]",
+		"(", "\\(",
+		")", "\\)",
+		"|", "\\|",
+		"*", ".*")
+}
+
 // Configure sets all loggers matching a comma-separated glob-style string
 // to the requested level.
 func Configure(setting string, level spacelog.LogLevel) error {
@@ -14,16 +31,16 @@ func Configure(setting string, level spacelog.LogLevel) error {
 		return nil
 	}
 
-	settings := strings.Split(setting, ",")
-	for _, setting := range settings {
-		// Convert from a glob-style string to a regex-style string
-		setting = strings.Replace(strings.TrimSpace(setting), "*", ".*", -1)
-		regex, err := regexp.Compile(setting)
-		if err != nil {
-			return err
-		}
-		spacelog.SetLevel(regex, level)
+	// Convert from a glob-style string to a regex-style string
+	settings := strings.Split(replacer.Replace(setting), ",")
+	for i := range settings {
+		settings[i] = strings.TrimSpace(settings[i])
 	}
+	regex, err := regexp.Compile(strings.Join(settings, "|"))
+	if err != nil {
+		return err
+	}
+	spacelog.SetLevel(regex, level)
 
 	return nil
 }
